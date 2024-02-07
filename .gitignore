@@ -30,3 +30,4 @@ docker-compose.override.yml
 *.bak
 *.swp
 .DS_Store
+.env

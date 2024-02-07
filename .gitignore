@@ -1,0 +1,32 @@
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtualenv
+venv/
+env/
+.venv/
+ENV/
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media
+static
+
+# Docker
+docker-compose.yml
+docker-compose.override.yml
+.dockerignore
+
+# VS Code
+.vscode/
+
+# Others
+*.bak
+*.swp
+.DS_Store

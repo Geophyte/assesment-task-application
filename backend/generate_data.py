@@ -1,5 +1,6 @@
 def generate_data(num_records=10):
     fake = Faker()
+    User = get_user_model()
 
     # Generate categories
     categories = ['Work', 'Personal', 'Shopping', 'Health', 'Education']
@@ -13,20 +14,19 @@ def generate_data(num_records=10):
         category = random.choice(Category.objects.all())
         Task.objects.create(title=title, description=description, completed=completed, category=category)
 
-    # Generate users and user profiles
+    # Generate users
     for _ in range(num_records):
         username = fake.user_name()
         email = fake.email()
         password = fake.password()
-        user = User.objects.create_user(username=username, email=email, password=password)
         bio = fake.text(max_nb_chars=200)
         profile_picture = None
-        UserProfile.objects.create(user=user, bio=bio, profile_picture=profile_picture)
+        CustomUser.objects.create(username=username, email=email, password=password, bio=bio, profile_picture=profile_picture)
 
     # Generate comments
     for _ in range(num_records):
         task = random.choice(Task.objects.all())
-        user = random.choice(User.objects.all())
+        user = random.choice(CustomUser.objects.all())
         text = fake.text(max_nb_chars=100)
         Comment.objects.create(task=task, user=user, text=text)
 
@@ -41,7 +41,8 @@ if __name__ == '__main__':
     import random
     from faker import Faker
     from django.contrib.auth.models import User
-    from api.models import Category, Task, UserProfile, Comment
+    from api.models import Category, Task, CustomUser, Comment
+    from django.contrib.auth import get_user_model
 
     num_records = 10
     generate_data(num_records)

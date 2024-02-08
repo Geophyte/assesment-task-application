@@ -3,9 +3,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from ..models import Comment
 from ..serializers.comment import CommentSerializer
+from ..permissions import IsOwnerOrReadOnly
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsOwnerOrReadOnly]
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

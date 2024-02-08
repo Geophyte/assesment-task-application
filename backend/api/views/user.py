@@ -1,19 +1,23 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from ..models import CustomUser
 from ..serializers.user import UserSerializer
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from ..forms import UserLoginForm, UserRegistrationForm, UserLogoutForm
+from ..permissions import IsAuthenticated, IsUnauthenticated
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsUnauthenticated])
 def register(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
@@ -30,6 +34,7 @@ def register(request):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsUnauthenticated])
 def login_user(request):
     if request.method == 'POST':
         username = request.data.get('username')
@@ -46,6 +51,7 @@ def login_user(request):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def logout_user(request):
     if request.method == 'POST':
         logout(request)

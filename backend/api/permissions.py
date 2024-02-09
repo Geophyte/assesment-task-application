@@ -28,7 +28,7 @@ class AuthenticatedUserCanReadAndModify(permissions.BasePermission):
         if request.user and request.user.is_authenticated:
             return request.method != 'POST'
         else:
-            return request.method in (['POST'] + permissions.SAFE_METHODS)
+            return request.method == 'POST' or request.method in permissions.SAFE_METHODS
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:

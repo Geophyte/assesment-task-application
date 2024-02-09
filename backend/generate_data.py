@@ -1,18 +1,6 @@
 def generate_data(num_records=10):
     fake = Faker()
-    User = get_user_model()
-
-    # Generate categories
-    categories = ['Work', 'Personal', 'Shopping', 'Health', 'Education']
-    Category.objects.bulk_create([Category(name=name) for name in categories])
-
-    # Generate tasks
-    for _ in range(num_records):
-        title = fake.text(max_nb_chars=50)
-        description = fake.text(max_nb_chars=200)
-        completed = random.choice([True, False])
-        category = random.choice(Category.objects.all())
-        Task.objects.create(title=title, description=description, completed=completed, category=category)
+    # User = get_user_model()
 
     # Generate users
     for _ in range(num_records):
@@ -22,6 +10,22 @@ def generate_data(num_records=10):
         bio = fake.text(max_nb_chars=200)
         profile_picture = None
         CustomUser.objects.create(username=username, email=email, password=password, bio=bio, profile_picture=profile_picture)
+
+    # Generate categories
+    categories = ['Work', 'Personal', 'Shopping', 'Health', 'Education']
+    for name in categories:
+        created_by = random.choice(CustomUser.objects.all())
+        Category.objects.create(name=name, created_by=created_by)
+
+    # Generate tasks
+    for _ in range(num_records):
+        title = fake.text(max_nb_chars=50)
+        description = fake.text(max_nb_chars=200)
+        completed = random.choice([True, False])
+        category = random.choice(Category.objects.all())
+        created_by = random.choice(CustomUser.objects.all())
+        last_modified_by = random.choice(CustomUser.objects.all())
+        Task.objects.create(title=title, description=description, completed=completed, category=category, created_by=created_by, last_modified_by=last_modified_by)
 
     # Generate comments
     for _ in range(num_records):

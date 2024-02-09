@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='created_categories')
 
     def __str__(self):
@@ -29,6 +29,9 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        unique_together = ('title', 'category')
 
 
 class Comment(models.Model):

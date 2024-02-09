@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from ..models import CustomUser
 from ..serializers.user import UserSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -15,19 +15,26 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
+    @action(detail=True, methods=['patch'])
+    def delete_profile_picture(self, request, pk=None):
+        user = request.user
+        print(f"login: {user.username}")
+        user.profile_picture = None
+        user.save()
+        return Response({'message': 'Profile picture deleted'}, status=status.HTTP_200_OK)
+
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsUnauthenticated])
 def register(request):
     if request.method == 'POST':
-        serializer = UserSerializer(data=request.data)
+        if request.method == 'POST':
+            serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
-            user.set_password(user.password)
-            print(f"register: {user.username}, {user.password}")
-            user.save()
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     else:
         form = UserRegistrationForm()
         return render(request, 'register.html', {'form': form})
@@ -59,3 +66,11 @@ def logout_user(request):
     else:
         form = UserLogoutForm()
         return render(request, 'logout.html', {'form': form})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def whoami(request):
+    user = request.user
+    serializer = UserSerializer(user)
+    return Response(serializer.data)

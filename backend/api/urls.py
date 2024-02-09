@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from .views.category import CategoryViewSet
 from .views.task import TaskViewSet
-from .views.user import UserViewSet, login_user, logout_user, register
+from .views.user import UserViewSet, login_user, logout_user, register, whoami
 from .views.comment import CommentViewSet
 
 router = DefaultRouter()
@@ -18,6 +18,7 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
+    path('whoami/', whoami, name='whoami'),
     path('comments/user/<int:user_id>/', CommentViewSet.as_view({'get': 'user_comments'}), name='user-comments'),
     path('comments/task/<int:task_id>/', CommentViewSet.as_view({'get': 'task_comments'}), name='task-comments'),
     path('comments/user/<int:user_id>/task/<int:task_id>/', CommentViewSet.as_view({'get': 'user_task_comments'}), name='user-task-comments'),

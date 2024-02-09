@@ -1,6 +1,5 @@
 def generate_data(num_records=10):
     fake = Faker()
-    # User = get_user_model()
 
     # Generate users
     for _ in range(num_records):
@@ -15,7 +14,9 @@ def generate_data(num_records=10):
     categories = ['Work', 'Personal', 'Shopping', 'Health', 'Education']
     for name in categories:
         created_by = random.choice(CustomUser.objects.all())
-        Category.objects.create(name=name, created_by=created_by)
+        existing_category = Category.objects.filter(name=name).exists()
+        if not existing_category:
+            Category.objects.create(name=name, created_by=created_by)
 
     # Generate tasks
     for _ in range(num_records):
@@ -44,9 +45,7 @@ if __name__ == '__main__':
 
     import random
     from faker import Faker
-    from django.contrib.auth.models import User
     from api.models import Category, Task, CustomUser, Comment
-    from django.contrib.auth import get_user_model
 
     num_records = 10
     generate_data(num_records)

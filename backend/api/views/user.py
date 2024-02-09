@@ -6,11 +6,11 @@ from ..serializers.user import UserSerializer
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from ..forms import UserLoginForm, UserRegistrationForm, UserLogoutForm
-from ..permissions import IsAuthenticated, IsUnauthenticated
+from ..permissions import IsAuthenticated, IsUnauthenticated, AuthenticatedUserCanReadAndModify
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AuthenticatedUserCanReadAndModify]
 
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer

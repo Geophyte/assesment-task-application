@@ -41,8 +41,9 @@ These requests might require a CSRF token for some of the requests. Paging is en
 10. **DELETE** `<server_url>/comments/<comment_id>/` - Allows us to delete a comment belonging to the current user.
 11. **GET** `<server_url>/whoami` - Retrieves information about the currently logged-in user.
 12. **PATCH** `<server_url>/users/<user_id>/` - Allows us to modify a user profile belonging to the current user. Body must contain at least one of these fields: 'username' (string), 'email' (string), 'profile_picture' (image file) fields.
-13. **DELETE** `<server_url>/users/<user_id>/` - Allows us to delete a user profile belonging to the current user.
-14. **POST** `<server_url>/logout/` - Allows us to logout and end session for current user.
+13. **PATCH** `<server_url>/users/<user_id>/delete_profile_picture/` - Allow us to delete user profile picture and set it to null
+14. **DELETE** `<server_url>/users/<user_id>/` - Allows us to delete a user profile belonging to the current user.
+15. **POST** `<server_url>/logout/` - Allows us to logout and end session for current user.
 
 
 # Technical Task: Django Application with Docker and DRF

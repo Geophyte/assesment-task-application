@@ -18,7 +18,6 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def delete_profile_picture(self, request, pk=None):
         user = request.user
-        print(f"login: {user.username}")
         user.profile_picture = None
         user.save()
         return Response({'message': 'Profile picture deleted'}, status=status.HTTP_200_OK)
@@ -46,7 +45,6 @@ def login_user(request):
     if request.method == 'POST':
         username = request.data.get('username')
         password = request.data.get('password')
-        print(f"login: {username}, {password}")
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)

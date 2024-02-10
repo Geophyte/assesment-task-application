@@ -14,8 +14,6 @@ class UserSerializerTestCase(TestCase):
 
     def test_user_serializer_create(self):
         serializer = UserSerializer(data=self.user_data)
-        if not serializer.is_valid():
-            print(serializer.errors)
         self.assertTrue(serializer.is_valid())
         serializer.save()
         self.assertEqual(CustomUser.objects.count(), 1)
@@ -29,8 +27,6 @@ class UserSerializerTestCase(TestCase):
             'profile_picture': None
         }
         serializer = UserSerializer(instance=user, data=updated_user_data)
-        if not serializer.is_valid():
-            print(serializer.errors)
         self.assertTrue(serializer.is_valid())
         serializer.save()
         user.refresh_from_db()

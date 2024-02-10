@@ -9,7 +9,7 @@ We can populate the database using `python generate_data.py`.
 - `/admin/` - A standard Django admin panel. **WARNING:** Using it to modify/create data might bypass API's data validation.
 - `/register/` - **POST:** Registers the user. **GET:** Retrieves the registration HTML form. Users cannot be logged in when accessing this endpoint. This endpoint does not automatically log in the user upon registration.
 - `/login/` - **POST:** Logs in the user. **GET:** Retrieves the login HTML form. Users cannot be logged in when accessing this endpoint. Username and password are required for login.
-- `/logout/` - **POST:** Logs out the user. **GET:** Retrieves the login HTML form. Users must be logged in when accessing this endpoint.
+- `/logout/` - **POST:** Logs out the user. **GET:** Retrieves the logout HTML form. Users must be logged in when accessing this endpoint.
 - `/whoami/` - **GET:** Retrieves information about the currently logged-in user.
 - `/users/` - Allows safe methods (GET, HEAD, OPTIONS) for everyone. Logged-in users can delete/modify only their profiles. Creating new users must be done through `/register/`.
 - `/categories/` - Allows safe methods (GET, HEAD, OPTIONS) for everyone. Logged-in users can create/delete categories. Categories must have unique names.
@@ -22,8 +22,11 @@ These requests might require a CSRF token for some of the requests. Paging is en
 ### Unlogged-in user
 1. **GET** `<server_url>/<users | categories | tasks | comments>/` - Returns the first 10 `<users | categories | tasks | comments>`.
 2. **GET** `<server_url>/<users | categories | tasks | comments>/<object_id>/` - Returns `<users | categories | tasks | comments>` with `object_id` as id.
-3. **POST** `<server_url>/register/` - Registers the user. The body must contain 'username' (string), 'email' (string), and 'password' (string) fields.
-4. **POST** `<server_url>/login/` - Logs in the user. We get CSRF token and session id. The body must contain 'username' (string) and 'password' (string) fields.
+3. **GET** `<server_url>/comments/user/<user_id>/` - Returns comments from specified `user_id`.
+4. **GET** `<server_url>/comments/task/<task_id>/` - Returns comments with specified `task_id`.
+5. **GET** `<server_url>/comments/user/<user_id>/task/<task_id>/` or `<server_url>/comments/task/<task_id>/user/<user_id>/` - Returns comments from specified `user_id` and with `task_id`.
+6. **POST** `<server_url>/register/` - Registers the user. The body must contain 'username' (string), 'email' (string), and 'password' (string) fields.
+7. **POST** `<server_url>/login/` - Logs in the user. We get CSRF token and session id. The body must contain 'username' (string) and 'password' (string) fields.
 
 ### Logged-in user
 1. **GET** `<server_url>/<users | categories | tasks | comments>/` - Returns the first 10 `<users | categories | tasks | comments>`.
